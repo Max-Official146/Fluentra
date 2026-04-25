@@ -17,12 +17,34 @@ This project uses a **non-React stack** and targets:
 - Missions + boss mock exam
 - Character unlocks
 
-## Run
+## Start locally (2 minutes)
+
+### 1) Prerequisites
+- Node.js 18+
+- npm
+- python3
+
+Optional quick check:
+```bash
+npm run doctor
+```
+
+### 2) Validate code
 ```bash
 npm run check
+```
+
+### 3) Run local server
+```bash
 npm run start
 ```
-Open `http://localhost:4173`
+Open: `http://localhost:4173`
+
+### 4) Run for phone/Android testing on same Wi-Fi
+```bash
+npm run start:lan
+```
+Then open on Android browser: `http://<YOUR_COMPUTER_IP>:4173`
 
 ## Android usage
 ### Option A: PWA install (fastest)
@@ -46,3 +68,4 @@ Use Capacitor (no React needed):
 - `web/app.js` – main game loop and UI wiring
 - `web/data.js` – progression/skills/missions/AI metadata
 - `web/ielts.js` – IELTS estimator
+- `docs/TESTING.md` – test checklist (web + Android)

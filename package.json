@@ -3,7 +3,9 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
+    "doctor": "bash scripts/doctor.sh",
     "start": "python3 -m http.server 4173 -d web",
+    "start:lan": "python3 -m http.server 4173 -d web --bind 0.0.0.0",
     "check": "node --check web/app.js && node --check web/data.js && node --check web/ielts.js"
   }
 }

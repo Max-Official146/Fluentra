@@ -1,7 +1,8 @@
 # Testing (Web + Android)
 
-## 1) Local sanity checks
+## 1) Local setup and sanity checks
 ```bash
+npm run doctor
 npm run check
 npm run start
 ```
@@ -16,10 +17,15 @@ Open `http://localhost:4173`.
 - Refresh page and verify state persists.
 
 ## 3) Android Chrome (PWA) checks
-1. Open app URL on Android Chrome.
-2. Install with "Add to Home screen".
-3. Launch installed app icon.
-4. Verify:
+1. Start LAN server from computer:
+   ```bash
+   npm run start:lan
+   ```
+2. Open app URL on Android Chrome:
+   `http://<YOUR_COMPUTER_IP>:4173`
+3. Install with "Add to Home screen".
+4. Launch installed app icon.
+5. Verify:
    - app opens fullscreen/standalone,
    - actions work with touch,
    - data persists after app close/reopen,
