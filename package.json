@@ -1,0 +1,9 @@
+{
+  "name": "fluentra-web-prototype",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 4173 -d web",
+    "check": "node --check web/app.js && node --check web/data.js && node --check web/ielts.js"
+  }
+}
