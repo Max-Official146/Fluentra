@@ -1,84 +1,39 @@
-# Fluentra Mobile (Interactive Prototype)
+# Fluentra (Web Prototype)
 
-Fluentra is a gamified English-learning mobile app prototype focused on:
-- Beginner → Advanced progression
-- IELTS speaking/writing seriousness
-- Professional English fluency for work
+You asked for a non-React-Native implementation.
+This project is now a **framework-free web app** (HTML/CSS/JavaScript modules).
 
-This version is now **interactive**, not just static UI.
+## Stack
+- Vanilla HTML/CSS/JavaScript
+- No React Native
+- No Expo
 
-## Implemented in this prototype
+## Features implemented
+- XP / coins / streak / levels
+- Skill tree with unlock prerequisites and costs
+- Speaking practice actions
+- Writing practice actions + IELTS band projection
+- Missions and boss mock IELTS exam
+- Profile progression and character unlocks
+- AI integration endpoint placeholders
 
-### Core progression
-- XP, coins, level system
-- Daily streak check-in
-- Lesson completion rewards
-- Character unlocks by level
-
-### Skill tree
-- Unlockable nodes across:
-  - Grammar
-  - Speaking
-  - Writing
-  - Vocabulary
-- Prerequisite-based unlocking and coin costs
-
-### Speaking practice
-- Sentence repetition mode action
-- AI conversation simulation action
-- Real-life scenario roleplay action
-- IELTS speaking simulator action
-
-### Writing practice
-- Sentence correction action
-- Paragraph building action
-- Essay band projection using IELTS utility
-- Professional English mission (email/interview/workplace direction)
-
-### Gamification
-- Missions with claim rewards
-- Boss level mock IELTS exam
-- Recent mock exam band history
-
-### AI integration stubs
-- Pronunciation coach endpoint contract
-- GPT conversation endpoint contract
-- Essay scoring endpoint contract
-
----
-
-## Quick start
+## Run
 
 ```bash
-git clone <repo-url>
-cd Fluentra
-npm install
 npm run start
 ```
 
-Then run on device/emulator using Expo controls (`a`, `i`, or QR code).
+Open: `http://localhost:4173`
 
----
+## Quick checks
+
+```bash
+npm run check
+```
 
 ## File map
-
-- `App.tsx` – Main interactive app loop and tabbed experience
-- `src/data/skillTree.ts` – Skill tree nodes and requirements
-- `src/data/progression.ts` – Level thresholds, avatars, missions
-- `src/engine/ielts.ts` – IELTS score estimator helper
-- `src/ai/services.ts` – AI endpoint metadata/contracts
-
-
----
-
-## What to do now
-
-1. Install dependencies with `npm install`.
-2. Run static validation with `npm run typecheck`.
-3. Launch app with `npm run start`.
-4. Execute the manual checks in `docs/TESTING.md`.
-5. If all pass, next step is backend/API integration for persistence and real AI calls.
-
-## Where testing steps are documented
-
-- Full checklist: `docs/TESTING.md`
+- `web/index.html` – app shell
+- `web/styles.css` – dark gamified UI
+- `web/app.js` – interaction logic and game loop
+- `web/data.js` – progression, missions, skills, AI service data
+- `web/ielts.js` – IELTS band estimator helper
