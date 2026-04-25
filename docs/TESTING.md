@@ -1,53 +1,30 @@
-# Testing (iPad + Web)
+# Testing (Web + Android)
 
-## 1) Start locally on your computer
+## 1) Local sanity checks
 ```bash
 npm run check
 npm run start
 ```
-App URL: `http://localhost:4173`
+Open `http://localhost:4173`.
 
-## 2) Test in desktop browser first
-- Open app and confirm tabs switch correctly.
-- Trigger lesson/check-in/mission/boss actions.
-- Refresh page and verify progress persists (localStorage).
+## 2) Web functional checks
+- Switch tabs (Learn/Speak/Write/Arena/Profile).
+- Complete lesson/check-in and verify XP/coins/streak updates.
+- Unlock skills and verify coin deduction + unlock state.
+- Claim missions once and verify no double-reward.
+- Run boss exam and confirm history updates.
+- Refresh page and verify state persists.
 
-## 3) Test directly on iPad (Safari)
+## 3) Android Chrome (PWA) checks
+1. Open app URL on Android Chrome.
+2. Install with "Add to Home screen".
+3. Launch installed app icon.
+4. Verify:
+   - app opens fullscreen/standalone,
+   - actions work with touch,
+   - data persists after app close/reopen,
+   - app still loads basic UI when briefly offline (cached shell).
 
-### Option A: same Wi-Fi local network (recommended)
-1. On your computer, find LAN IP (example: `192.168.1.20`).
-2. Start app: `npm run start`.
-3. On iPad Safari, open: `http://<YOUR_LAN_IP>:4173`.
-4. Verify UI scales for tablet and buttons are touch-friendly.
-
-### Option B: remote tunnel (if LAN blocked)
-- Use a secure tunnel tool (Cloudflare Tunnel / ngrok) to expose local port `4173`, then open that URL on iPad.
-
-## 4) iPad-specific checks
-- Portrait + landscape both look correct.
-- Tabs/buttons are easy to tap (no accidental misses).
-- Sticky side panel is visible on wider layout.
-- Safe-area spacing looks correct near top/bottom edges.
-- Progress state remains after Safari refresh.
-
-## 5) Functional checks by tab
-
-### Learn
-- Complete lesson: XP/coins/lesson count increase.
-- Daily check-in: streak and coins increase.
-- Unlock eligible skills: coins decrease and skill changes to `Unlocked`.
-
-### Speak
-- Trigger each speaking action and verify XP/coins increase.
-
-### Write
-- Trigger writing actions and verify XP/coins increase.
-- Verify IELTS projection card values render.
-
-### Arena
-- Claim each mission once: first claim rewards, then shows `Done`.
-- Boss exam: rewards are added and exam history updates.
-
-### Profile
-- Verify HUD and side panel stats reflect actions.
-- Verify progress bar and character unlocks update with level.
+## 4) Optional native Android packaging checks (Capacitor)
+- Build + open Android project using steps from README.
+- Verify web assets load in WebView and gameplay functions the same as browser.

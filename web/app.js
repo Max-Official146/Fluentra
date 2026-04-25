@@ -1,7 +1,7 @@
 import { aiServices, characters, levelThresholds, missions, skillTree } from "./data.js";
 import { estimateBandScore } from "./ielts.js";
 
-const STORAGE_KEY = "fluentra-ipad-state-v1";
+const STORAGE_KEY = "fluentra-state-v2";
 
 const state = loadState() ?? {
   tab: "Learn",
@@ -26,6 +26,12 @@ function loadState() {
 
 function persist() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function registerServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js").catch(() => null);
+  }
 }
 
 function getLevel(xp) {
@@ -187,7 +193,7 @@ function renderMainContent() {
   if (state.tab === "Speak") return renderSpeak();
   if (state.tab === "Write") return renderWrite();
   if (state.tab === "Arena") return renderArena();
-  return `<section class="section"><h2>Profile</h2><p class="muted">Use this iPad HUD + side panel to track your progression.</p></section>`;
+  return `<section class="section"><h2>Profile</h2><p class="muted">Track progression using HUD and side panel.</p></section>`;
 }
 
 function wireEvents(app) {
@@ -237,7 +243,7 @@ function render() {
 
   app.innerHTML = `
     <h1>Fluentra</h1>
-    <p class="subtitle">iPad-optimized web prototype · Level ${level}</p>
+    <p class="subtitle">Web + Android-ready prototype · Level ${level}</p>
 
     <section class="hud">
       <div class="stat"><strong>${level}</strong><div class="muted">Level</div></div>
@@ -259,4 +265,5 @@ function render() {
   wireEvents(app);
 }
 
+registerServiceWorker();
 render();

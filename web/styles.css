@@ -1,7 +1,6 @@
 :root {
   color-scheme: dark;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --bg: #070a14;
   --panel: #121d38cc;
   --border: #627dcd;
   --text: #e7eeff;
@@ -17,31 +16,20 @@ body {
   background: radial-gradient(circle at top, #16284f, #070a14 60%);
   color: var(--text);
   min-height: 100svh;
-  -webkit-font-smoothing: antialiased;
 }
 
 .app {
-  max-width: 1160px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: calc(12px + var(--safe-top)) 14px calc(14px + var(--safe-bottom));
 }
 
-h1 { margin: 0 0 6px; font-size: clamp(1.8rem, 2.4vw, 2.4rem); }
+h1 { margin: 0 0 4px; font-size: clamp(1.6rem, 2.1vw, 2.4rem); }
 .subtitle { margin: 0 0 14px; color: var(--muted); }
 
-.hud {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.hud .stat {
-  background: #34498766;
-  border: 1px solid #7e98eb55;
-  border-radius: 12px;
-  padding: 10px;
-}
-.hud strong { font-size: 1.05rem; }
+.hud { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+.hud .stat { background: #34498766; border: 1px solid #7e98eb55; border-radius: 12px; padding: 10px; }
+.hud strong { font-size: 1.02rem; }
 
 .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
 .tab {
@@ -62,9 +50,9 @@ h1 { margin: 0 0 6px; font-size: clamp(1.8rem, 2.4vw, 2.4rem); }
   border: 1px solid #6f89da66;
   border-radius: 14px;
   padding: 12px;
-  margin: 0 0 12px;
+  margin-bottom: 12px;
 }
-.section h2 { margin: 0 0 10px; font-size: 1.15rem; }
+.section h2 { margin: 0 0 10px; font-size: 1.1rem; }
 .grid { display: grid; gap: 8px; }
 .card { background: #31488055; border-radius: 10px; padding: 10px; }
 .muted { color: var(--muted); }
@@ -91,12 +79,12 @@ button.action.secondary { background: #4d66b8; }
 ul { margin: 0; padding-left: 18px; }
 .small { font-size: 0.9rem; color: #95adff; }
 
-@media (min-width: 768px) {
-  .app { padding-inline: 20px; }
-  .layout { grid-template-columns: 2fr 1fr; align-items: start; }
-  .sticky {
-    position: sticky;
-    top: calc(10px + var(--safe-top));
-  }
+@media (min-width: 700px) {
+  .hud { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .grid.two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 980px) {
+  .layout { grid-template-columns: 2fr 1fr; align-items: start; }
+  .sticky { position: sticky; top: calc(10px + var(--safe-top)); }
 }

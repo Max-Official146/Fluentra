@@ -1,0 +1,11 @@
+{
+  "name": "Fluentra",
+  "short_name": "Fluentra",
+  "description": "Gamified English learning for IELTS and professional fluency",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070a14",
+  "theme_color": "#070a14",
+  "orientation": "portrait",
+  "icons": []
+}

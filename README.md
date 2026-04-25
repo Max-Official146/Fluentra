@@ -1,38 +1,48 @@
-# Fluentra (iPad-Optimized Web Prototype)
+# Fluentra (Web + Android, Non-React)
 
-This version is designed for **iPad Safari** (and desktop browsers), with large touch targets, responsive two-pane layout, and persistent local progress.
+This project uses a **non-React stack** and targets:
+1. Web browsers
+2. Android devices (via PWA install in Chrome, and Capacitor-ready structure)
 
 ## Stack
-- Vanilla HTML/CSS/JavaScript
-- No React Native
-- No Expo
+- Vanilla HTML/CSS/JavaScript modules
+- PWA manifest + service worker
+- LocalStorage persistence for gameplay state
 
-## iPad-focused improvements
-- Safe-area support (`viewport-fit=cover` + inset-aware spacing)
-- Touch-friendly controls (44px+ targets)
-- Two-pane layout on tablet widths (main content + sticky side panel)
-- Persistent local progress via `localStorage`
+## Features
+- XP / coins / streak / levels
+- Skill tree with unlock prerequisites and costs
+- Speaking and writing training actions
+- IELTS band projection
+- Missions + boss mock exam
+- Character unlocks
 
-## Run locally
-
-```bash
-npm run start
-```
-
-Open: `http://localhost:4173`
-
-## Quick checks
-
+## Run
 ```bash
 npm run check
+npm run start
 ```
+Open `http://localhost:4173`
 
-## iPad testing guide
-- See `docs/TESTING.md` for full local + iPad testing steps.
+## Android usage
+### Option A: PWA install (fastest)
+1. Open the app in Android Chrome.
+2. Tap **Add to Home screen**.
+3. Launch as standalone app.
+
+### Option B: Package as native Android app
+Use Capacitor (no React needed):
+1. `npm i -D @capacitor/cli @capacitor/core`
+2. `npx cap init fluentra com.fluentra.app --web-dir=web`
+3. `npm i -D @capacitor/android`
+4. `npx cap add android`
+5. `npx cap copy android && npx cap open android`
 
 ## File map
-- `web/index.html` – iPad-ready shell and meta tags
-- `web/styles.css` – responsive tablet styles
-- `web/app.js` – stateful game loop with persistence
-- `web/data.js` – progression, skills, missions, AI service metadata
-- `web/ielts.js` – IELTS band estimator helper
+- `web/index.html` – web shell + PWA meta
+- `web/manifest.webmanifest` – install metadata
+- `web/sw.js` – offline caching
+- `web/styles.css` – responsive layout for mobile + desktop
+- `web/app.js` – main game loop and UI wiring
+- `web/data.js` – progression/skills/missions/AI metadata
+- `web/ielts.js` – IELTS estimator
