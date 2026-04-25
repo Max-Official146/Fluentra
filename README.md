@@ -1,23 +1,19 @@
-# Fluentra (Web Prototype)
+# Fluentra (iPad-Optimized Web Prototype)
 
-You asked for a non-React-Native implementation.
-This project is now a **framework-free web app** (HTML/CSS/JavaScript modules).
+This version is designed for **iPad Safari** (and desktop browsers), with large touch targets, responsive two-pane layout, and persistent local progress.
 
 ## Stack
 - Vanilla HTML/CSS/JavaScript
 - No React Native
 - No Expo
 
-## Features implemented
-- XP / coins / streak / levels
-- Skill tree with unlock prerequisites and costs
-- Speaking practice actions
-- Writing practice actions + IELTS band projection
-- Missions and boss mock IELTS exam
-- Profile progression and character unlocks
-- AI integration endpoint placeholders
+## iPad-focused improvements
+- Safe-area support (`viewport-fit=cover` + inset-aware spacing)
+- Touch-friendly controls (44px+ targets)
+- Two-pane layout on tablet widths (main content + sticky side panel)
+- Persistent local progress via `localStorage`
 
-## Run
+## Run locally
 
 ```bash
 npm run start
@@ -31,9 +27,12 @@ Open: `http://localhost:4173`
 npm run check
 ```
 
+## iPad testing guide
+- See `docs/TESTING.md` for full local + iPad testing steps.
+
 ## File map
-- `web/index.html` – app shell
-- `web/styles.css` – dark gamified UI
-- `web/app.js` – interaction logic and game loop
-- `web/data.js` – progression, missions, skills, AI service data
+- `web/index.html` – iPad-ready shell and meta tags
+- `web/styles.css` – responsive tablet styles
+- `web/app.js` – stateful game loop with persistence
+- `web/data.js` – progression, skills, missions, AI service metadata
 - `web/ielts.js` – IELTS band estimator helper

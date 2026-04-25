@@ -1,7 +1,9 @@
 import { aiServices, characters, levelThresholds, missions, skillTree } from "./data.js";
 import { estimateBandScore } from "./ielts.js";
 
-const state = {
+const STORAGE_KEY = "fluentra-ipad-state-v1";
+
+const state = loadState() ?? {
   tab: "Learn",
   xp: 120,
   coins: 320,
@@ -11,6 +13,20 @@ const state = {
   completedMissions: [],
   mockExamHistory: []
 };
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function persist() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
 
 function getLevel(xp) {
   let level = 1;
@@ -27,6 +43,7 @@ function reward(xp, coins) {
   state.xp += xp;
   state.coins += coins;
   state.lessonsDone += 1;
+  persist();
   render();
 }
 
@@ -37,6 +54,7 @@ function unlockSkill(id, cost) {
   if (!node.prerequisites.every((p) => state.unlockedSkills.includes(p))) return;
   state.coins -= cost;
   state.unlockedSkills.push(id);
+  persist();
   render();
 }
 
@@ -45,6 +63,7 @@ function claimMission(mission) {
   state.completedMissions.push(mission);
   state.xp += 100;
   state.coins += 80;
+  persist();
   render();
 }
 
@@ -55,10 +74,19 @@ function bossExam() {
     grammarAccuracy: Math.min(0.9, 0.66 + state.lessonsDone * 0.01),
     lexicalRange: Math.min(0.9, 0.67 + state.lessonsDone * 0.01)
   }).overall;
+
   state.mockExamHistory.unshift(band);
   state.mockExamHistory = state.mockExamHistory.slice(0, 5);
   state.xp += Math.round(band * 35);
   state.coins += Math.round(band * 25);
+  persist();
+  render();
+}
+
+function checkin() {
+  state.streak += 1;
+  state.coins += 20;
+  persist();
   render();
 }
 
@@ -77,7 +105,7 @@ function renderLearn() {
     </section>
     <section class="section">
       <h2>Skill Tree Unlocks</h2>
-      <div class="grid">
+      <div class="grid two-col">
         ${skillTree.map((node) => {
           const unlocked = state.unlockedSkills.includes(node.id);
           const canUnlock = node.prerequisites.every((p) => state.unlockedSkills.includes(p));
@@ -130,54 +158,43 @@ function renderArena() {
   <section class="section"><h2>Boss Level: Mock IELTS</h2>
     <button class="action" data-action="boss">Simulate Boss Exam</button>
     <p class="muted">Recent bands: ${state.mockExamHistory.length ? state.mockExamHistory.join(", ") : "None yet"}</p>
-  </section>
-  <section class="section"><h2>AI Integration Layer</h2>
-    <div class="grid">${aiServices.map((s) => `<div class='card'><strong>${s.name}</strong><div class='muted'>${s.purpose}</div><div class='small'>${s.endpointHint}</div></div>`).join("")}</div>
   </section>`;
 }
 
-function renderProfile() {
+function renderAside() {
   const { level, progress } = getLevel(state.xp);
   const unlockedCharacters = characters.filter((c) => level >= c.unlockLevel);
 
-  return `<section class="section"><h2>Profile</h2>
-    <div class="stat-row">
-      <div class="stat"><strong>${level}</strong><div class="muted">Level</div></div>
-      <div class="stat"><strong>${state.xp}</strong><div class="muted">XP</div></div>
-      <div class="stat"><strong>${state.coins}</strong><div class="muted">Coins</div></div>
-      <div class="stat"><strong>${state.streak}d</strong><div class="muted">Streak</div></div>
-    </div>
-    <div class="progress"><div style="width:${Math.round(progress * 100)}%"></div></div>
-    <div class="muted">${state.lessonsDone} lessons completed.</div>
-  </section>
-  <section class="section"><h2>Unlocked Characters</h2>
-    <div class="grid">${unlockedCharacters.map((a) => `<div class='card'><strong>${a.name}</strong><div class='muted'>${a.perk}</div></div>`).join("") || "<div class='locked'>No characters unlocked yet.</div>"}</div>
-  </section>`;
+  return `<aside class="sticky">
+    <section class="section">
+      <h2>Progress</h2>
+      <div class="progress"><div style="width:${Math.round(progress * 100)}%"></div></div>
+      <div class="muted">${state.lessonsDone} lessons completed.</div>
+    </section>
+
+    <section class="section"><h2>Unlocked Characters</h2>
+      <div class="grid">${unlockedCharacters.map((a) => `<div class='card'><strong>${a.name}</strong><div class='muted'>${a.perk}</div></div>`).join("") || "<div class='locked'>No characters unlocked yet.</div>"}</div>
+    </section>
+
+    <section class="section"><h2>AI Integration Layer</h2>
+      <div class="grid">${aiServices.map((s) => `<div class='card'><strong>${s.name}</strong><div class='muted'>${s.purpose}</div><div class='small'>${s.endpointHint}</div></div>`).join("")}</div>
+    </section>
+  </aside>`;
 }
 
-function render() {
-  const { level } = getLevel(state.xp);
-  const app = document.querySelector("#app");
+function renderMainContent() {
+  if (state.tab === "Learn") return renderLearn();
+  if (state.tab === "Speak") return renderSpeak();
+  if (state.tab === "Write") return renderWrite();
+  if (state.tab === "Arena") return renderArena();
+  return `<section class="section"><h2>Profile</h2><p class="muted">Use this iPad HUD + side panel to track your progression.</p></section>`;
+}
 
-  let content = "";
-  if (state.tab === "Learn") content = renderLearn();
-  if (state.tab === "Speak") content = renderSpeak();
-  if (state.tab === "Write") content = renderWrite();
-  if (state.tab === "Arena") content = renderArena();
-  if (state.tab === "Profile") content = renderProfile();
-
-  app.innerHTML = `
-    <h1>Fluentra</h1>
-    <p class="subtitle">Web prototype (non-React-Native) · Level ${level}</p>
-    <div class="tabs">
-      ${["Learn", "Speak", "Write", "Arena", "Profile"].map(tabButton).join("")}
-    </div>
-    ${content}
-  `;
-
+function wireEvents(app) {
   app.querySelectorAll("[data-tab]").forEach((el) => {
     el.addEventListener("click", () => {
       state.tab = el.getAttribute("data-tab");
+      persist();
       render();
     });
   });
@@ -208,16 +225,38 @@ function render() {
   if (lessonBtn) lessonBtn.addEventListener("click", () => reward(60, 25));
 
   const checkinBtn = app.querySelector("[data-action='checkin']");
-  if (checkinBtn) {
-    checkinBtn.addEventListener("click", () => {
-      state.streak += 1;
-      state.coins += 20;
-      render();
-    });
-  }
+  if (checkinBtn) checkinBtn.addEventListener("click", checkin);
 
   const bossBtn = app.querySelector("[data-action='boss']");
   if (bossBtn) bossBtn.addEventListener("click", bossExam);
+}
+
+function render() {
+  const { level } = getLevel(state.xp);
+  const app = document.querySelector("#app");
+
+  app.innerHTML = `
+    <h1>Fluentra</h1>
+    <p class="subtitle">iPad-optimized web prototype · Level ${level}</p>
+
+    <section class="hud">
+      <div class="stat"><strong>${level}</strong><div class="muted">Level</div></div>
+      <div class="stat"><strong>${state.xp}</strong><div class="muted">XP</div></div>
+      <div class="stat"><strong>${state.coins}</strong><div class="muted">Coins</div></div>
+      <div class="stat"><strong>${state.streak}d</strong><div class="muted">Streak</div></div>
+    </section>
+
+    <div class="tabs">
+      ${["Learn", "Speak", "Write", "Arena", "Profile"].map(tabButton).join("")}
+    </div>
+
+    <div class="layout">
+      <div>${renderMainContent()}</div>
+      ${renderAside()}
+    </div>
+  `;
+
+  wireEvents(app);
 }
 
 render();
