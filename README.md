@@ -68,3 +68,17 @@ Then run on device/emulator using Expo controls (`a`, `i`, or QR code).
 - `src/engine/ielts.ts` – IELTS score estimator helper
 - `src/ai/services.ts` – AI endpoint metadata/contracts
 
+
+---
+
+## What to do now
+
+1. Install dependencies with `npm install`.
+2. Run static validation with `npm run typecheck`.
+3. Launch app with `npm run start`.
+4. Execute the manual checks in `docs/TESTING.md`.
+5. If all pass, next step is backend/API integration for persistence and real AI calls.
+
+## Where testing steps are documented
+
+- Full checklist: `docs/TESTING.md`
